@@ -9,10 +9,10 @@ import io
 app = FastAPI()
 
 # Load the Keras models (ensure these paths are correct)
-plant_type_model = tf.keras.models.load_model("model/final_plant_classifier_saved_model.h5")
-tomato_disease_model = tf.keras.models.load_model("model/final_plant_tomato_saved_model.h5")
-potato_disease_model = tf.keras.models.load_model("model/final_potato_saved_model.h5")
-bellpepper_disease_model = tf.keras.models.load_model("model/final_bell_pepper_saved_model.h5")
+plant_type_model = tf.keras.models.load_model("model/final_plant_classifier_saved_model.keras")
+tomato_disease_model = tf.keras.models.load_model("model/final_plant_tomato_saved_model.keras")
+potato_disease_model = tf.keras.models.load_model("model/final_potato_saved_model.keras")
+bellpepper_disease_model = tf.keras.models.load_model("model/final_bell_pepper_saved_model.keras")
 
 # Define class names for plant type prediction
 PLANT_TYPE_CLASSES = ["Bell Pepper", "Potato", "Tomato"]
