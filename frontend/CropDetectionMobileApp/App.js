@@ -12,7 +12,7 @@ import {
   TouchableOpacity,
   ImageBackground,
   ScrollView,
-  ActivityIndicator,  // Import the loader
+  ActivityIndicator,  
 } from 'react-native';
 import axios from 'axios';
 import { Camera } from 'expo-camera';
@@ -64,7 +64,7 @@ const App = () => {
       setDisease('Prediction failed');
       console.error(error);
     } finally {
-      setLoading(false);  // Set loading to false when the request is complete
+      setLoading(false);  // Set loading to false when the request is comple
     }
   };
 
@@ -122,9 +122,8 @@ const App = () => {
         source={require('./assets/farmbackground.jpg')}
         style={styles.backgroundImage}
         blurRadius={4}
-        pointerEvents="none" // Prevents background from blocking touch interactions
+        pointerEvents="none" 
       >
-        {/* Dark brown overlay */}
         <View style={styles.overlay} />
 
         <ScrollView contentContainerStyle={styles.container}>
@@ -201,7 +200,7 @@ const styles = StyleSheet.create({
   },
   overlay: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(101, 67, 33, 0.55)', // dark brownish overlay
+    backgroundColor: 'rgba(101, 67, 33, 0.55)', 
     zIndex: 0,
   },
   container: {
@@ -217,7 +216,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   clearStyle: {
-    marginTop: 20, // Added margin to push the delete icon below the title
+    marginTop: 20, 
   },
   clearImage: {
     height: 30,
@@ -230,14 +229,14 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     borderWidth: 2,
     borderColor: '#FFF',
-    marginVertical: 40, // Added more space between image and buttons
+    marginVertical: 40, 
   },
   placeholderContainer: {
     height: width * 0.8,
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 20,
-    marginVertical: 40, // Added margin to adjust space
+    marginVertical: 40, 
   },
   emptyText: {
     color: '#FFF',
@@ -265,7 +264,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     width: '80%',
-    marginBottom: 40, // Adjusted bottom margin for more space
+    marginBottom: 40, 
   },
   btnStyle: {
     backgroundColor: '#FFF',
