@@ -5,10 +5,10 @@ from fastapi.responses import JSONResponse
 from PIL import Image
 import io
 
-# Initialize FastAPI app
+
 app = FastAPI()
 
-# Load the Keras models (ensure these paths are correct)
+# Load the Keras models 
 plant_type_model = tf.keras.models.load_model("model/final_plant_classifier_saved_model.keras")
 tomato_disease_model = tf.keras.models.load_model("model/final_plant_tomato_saved_model.keras")
 potato_disease_model = tf.keras.models.load_model("model/final_potato_saved_model.keras")
@@ -26,30 +26,27 @@ TOMATO_DISEASE_CLASSES = [
 POTATO_DISEASE_CLASSES = ["Potato_Early_blight","Potato_healthy", "Potato_Late_blight"]
 BELLPEPPER_DISEASE_CLASSES = [ "BellPepper_Bacterial_spot","BellPepper_healthy"]
 
-# Helper function to decode and preprocess the image
+# decode and preprocess the image
 def decode_image(image_data: bytes) -> np.ndarray:
     image = Image.open(io.BytesIO(image_data)).convert("RGB")
     image = image.resize((256, 256))
-    image = np.array(image).astype("float32")  # No division by 255
+    image = np.array(image).astype("float32")  
     return image
 
 
-# Helper function to make plant type prediction
-# Helper function to make plant type prediction
 def predict_plant_type(image: np.ndarray) -> tuple:
-    image = tf.expand_dims(image, 0)  # Add batch dimension, similar to notebook
+    image = tf.expand_dims(image, 0)  
     predictions = plant_type_model.predict(image)
 
-    # Log raw predictions for debugging
-    print(f"Raw predictions: {predictions}")  # Add this line to inspect raw outputs
+    print(f"Raw predictions: {predictions}") 
 
     predicted_index = np.argmax(predictions[0])
-    confidence = round(100 * float(predictions[0][predicted_index]), 2)  # Convert to percentage
+    confidence = round(100 * float(predictions[0][predicted_index]), 2) 
     predicted_class = PLANT_TYPE_CLASSES[predicted_index]
     return predicted_class, confidence
 
 
-# Helper function to make disease prediction
+#  disease prediction
 def predict_disease(image: np.ndarray, plant_type: str) -> dict:
     if plant_type == "Tomato":
         model = tomato_disease_model
@@ -63,10 +60,10 @@ def predict_disease(image: np.ndarray, plant_type: str) -> dict:
     else:
         return {"class": "Unknown", "confidence": 0.0}
 
-    image = tf.expand_dims(image, 0)  # Add batch dimension
+    image = tf.expand_dims(image, 0)  
     predictions = model.predict(image)
     predicted_index = np.argmax(predictions[0])
-    confidence = round(100 * float(predictions[0][predicted_index]), 2)  # Convert to percentage
+    confidence = round(100 * float(predictions[0][predicted_index]), 2)  
     predicted_class = classes[predicted_index]
 
     return {
@@ -81,16 +78,11 @@ def home():
 @app.post("/predict")
 async def predict_route(file: UploadFile = File(...)):
     try:
-        # Read image from file
+       
         image_data = await file.read()
-
-        # Decode and preprocess the image
         image = decode_image(image_data)
 
-        # Step 1: Predict Plant Type
         plant_type, plant_confidence = predict_plant_type(image)
-
-        # Step 2: Predict Disease based on Plant Type
         disease_result = predict_disease(image, plant_type)
 
         # Return both plant type and disease prediction
